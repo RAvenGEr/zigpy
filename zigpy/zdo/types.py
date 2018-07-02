@@ -126,10 +126,10 @@ class Routes(t.Struct):
 
 
 class Status(t.uint8_t, enum.Enum):
-NWK = ('NWKAddr', t.uint16_t)
-NWKI = ('NWKAddrOfInterest', t.uint16_t)
-IEEE = ('IEEEAddr', t.EUI64)
-STATUS = ('Status', Status)
+    NWK = ('NWKAddr', t.uint16_t)
+    NWKI = ('NWKAddrOfInterest', t.uint16_t)
+    IEEE = ('IEEEAddr', t.EUI64)
+    STATUS = ('Status', Status)
 
 
 CLUSTERS = {
