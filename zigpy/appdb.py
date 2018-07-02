@@ -49,6 +49,9 @@ class PersistingListener:
 
     def device_initialized(self, device):
         pass
+    def device_updated(self, device):
+        """ event to update device information during normal device life time."""
+        self._save_device(device)
 
     def device_left(self, device):
         pass
