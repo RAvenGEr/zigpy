@@ -13,6 +13,9 @@ LOGGER = logging.getLogger(__name__)
 class Registry(type):
     def __init__(cls, name, bases, nmspc):  # noqa: N805
         super(Registry, cls).__init__(name, bases, nmspc)
+        if getattr(cls, '_skip_registry', False):
+            return
+
         if hasattr(cls, 'cluster_id'):
             cls._registry[cls.cluster_id] = cls
         if hasattr(cls, 'cluster_id_range'):
@@ -143,7 +146,9 @@ class Cluster(util.ListenableMixin, util.LocalLogMixin, metaclass=Registry):
             return
 
         self.debug("ZCL request 0x%04x: %s", command_id, args)
-        if command_id > 0xff:        # zcl cluster command
+        if command_id <= 0xff:
+            self.listener_event('zdo_command', tsn, command_id, args)
+        else:
             # Unencapsulate bad hack
             command_id -= 256
             self.listener_event('cluster_command', tsn, command_id, args)
